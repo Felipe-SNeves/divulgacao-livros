@@ -1,5 +1,7 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { Livro } from '../livro.model';
+import { NgForm } from '@angular/forms';
+import { LivroService } from '../livro.service';
 
 @Component({
   	selector: 'app-livro-inserir',
@@ -7,32 +9,19 @@ import { Livro } from '../livro.model';
   	styleUrls: ['./livro-inserir.component.css']
 })
 
-export class LivroInserirComponent implements OnInit {
+export class LivroInserirComponent {
 
-	@Output () livroAdicionado = new EventEmitter<Livro> ();
-
-	id: string;
-	titulo: string;
-	autor: string;
-	qntd_paginas: string;
-
-	onAdicionarLivro () {
-		const livro: Livro = {
-			id: this.id,
-			titulo: this.titulo,
-			autor: this.autor,
-			qntd_paginas: this.qntd_paginas,
-		};
-		this.livroAdicionado.emit(livro);
-		this.id = "";
-		this.titulo = "";
-		this.autor = "";
-		this.qntd_paginas = "";
+	onAdicionarLivro (livroForm: NgForm) {
+		if (livroForm.invalid) return;
+		this.livroService.adicionarLivro (
+			livroForm.value.id,
+			livroForm.value.titulo,
+			livroForm.value.autor,
+			livroForm.value.qntd_paginas
+		);
+		livroForm.resetForm ();
 	}
 
-	constructor() { }
-
-  	ngOnInit(): void {
-  	}
-
+	constructor (private livroService: LivroService) {
+	}
 }
