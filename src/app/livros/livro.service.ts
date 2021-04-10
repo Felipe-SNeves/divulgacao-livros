@@ -16,7 +16,7 @@ export class LivroService {
 	}
 
 	getLivros (): void {
-		this.httpClient.get <{mensagem: string, livros: Livro []}> ('http://192.168.0.60:3000/api/livros').subscribe (
+	this.httpClient.get <{mensagem: string, livros: Livro []}> ('http://192.168.0.74:3000/api/livros').subscribe (
 
 			(dados) => {
 				this.livros = dados.livros;
@@ -34,7 +34,7 @@ export class LivroService {
 			qntd_paginas: qntd_paginas
 		};
 
-		this.httpClient.post<{mensagem: string}> ('http://192.168.0.60:3000/api/livros',
+		this.httpClient.post<{mensagem: string}> ('http://192.168.0.74:3000/api/livros',
 							 livro).subscribe(
 
 			(dados) => {

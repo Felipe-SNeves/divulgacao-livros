@@ -1,29 +1,15 @@
 const express = require ('express');
 const app = express ();
 const bodyParser = require ('body-parser');
+const mongoose = require ('mongoose');
+const Livro = require ('./models/livro');
+
+mongoose.connect ('mongodb://localhost:27017/app-livros', {useNewUrlParser: true})
+.then( () => console.log ('MongoDB: OK')).catch( () => console.log('MongoDB: Failure'));
 
 app.use (bodyParser.json());
 
-const livros = [
-	{
-		id: '1',
-		titulo: 'Memórias Póstumas de Brás Cubas',
-		autor: 'Machado de Assis',
-		qntd_paginas: '243'
-	},
-	{
-		id: '2',
-		titulo: 'O Cortiço',
-		autor: 'Aluísio Azevedo',
-		qntd_paginas: '239'
-	},
-	{
-		id: '3',
-		titulo: 'Mayombe',
-		autor: 'Pepetela',
-		qntd_paginas: '248'
-	}
-];
+const livros = [];
 
 app.use (
 
@@ -38,17 +24,28 @@ app.use (
 app.post ('/api/livros',
 
 	(req, res, next) => {
-		const livro = req.body;
+
+		const livro = new Livro ({
+			id: req.body.id,
+			titulo: req.body.titulo,
+			autor: req.body.autor,
+			qntd_paginas: req.body.qntd_paginas
+		});
+		livro.save ();
 		res.status(200).json({mensagem: 'O livro foi inserido com sucesso!'});
 	}
 );
 
-app.use ('/api/livros',
+app.get ('/api/livros',
 
 	(req, res, next) => {
 
-		res.status(200).json({mensagem: "Submetendo lista de livros!", livros: livros});
-	}
-);
+		Livro.find().then ( documents => {
+		res.status(200).json({
+			mensagem: "Submetendo lista de livros!",
+			livros: documents
+		});
+	})
+});
 
 module.exports = app;
