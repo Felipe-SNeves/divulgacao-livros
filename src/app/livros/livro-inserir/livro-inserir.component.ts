@@ -14,7 +14,6 @@ export class LivroInserirComponent {
 	onAdicionarLivro (livroForm: NgForm) {
 		if (livroForm.invalid) return;
 		this.livroService.adicionarLivro (
-			livroForm.value.id,
 			livroForm.value.titulo,
 			livroForm.value.autor,
 			livroForm.value.qntd_paginas

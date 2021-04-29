@@ -31,8 +31,12 @@ app.post ('/api/livros',
 			autor: req.body.autor,
 			qntd_paginas: req.body.qntd_paginas
 		});
-		livro.save ();
-		res.status(200).json({mensagem: 'O livro foi inserido com sucesso!'});
+		livro.save ().then (livroInserido => {
+			res.status(200).json({
+				mensagem: 'Cliente inserido',
+				id: livroInserido._id
+			})
+		});
 	}
 );
 
@@ -41,11 +45,21 @@ app.get ('/api/livros',
 	(req, res, next) => {
 
 		Livro.find().then ( documents => {
+		console.log (documents);
 		res.status(200).json({
 			mensagem: "Submetendo lista de livros!",
 			livros: documents
 		});
 	})
 });
+
+app.delete ('/api/livros/:id', 
+	(req, res, next) => {
+		Livro.deleteOne ({_id: req.params.id}).then ((resultado) => {
+			console.log (resultado);
+			res.status(200).json({mensagem: "Livro removido"});
+		})
+	}
+)
 
 module.exports = app;

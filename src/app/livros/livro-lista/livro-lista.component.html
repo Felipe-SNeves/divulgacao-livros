@@ -2,11 +2,11 @@
 	<mat-expansion-panel *ngFor="let livro of livros">
 		<mat-expansion-panel-header>Título: {{livro.titulo}}</mat-expansion-panel-header>
 		<p>Autor: {{livro.autor}}</p>
-		<p>ID: {{livro.id}}</p>
+		<!--><p>ID: {{livro.id}}</p><-->
 		<p>Quantidade de páginas: {{livro.qntd_paginas}}</p>
 		<mat-action-row>
 			<button mat-button color="primary">EDITAR</button>
-			<button mat-button color="warn">REMOVER</button>
+			<button mat-button color="warn" (click)="onDelete(livro.id)">REMOVER</button>
 		</mat-action-row>
 	</mat-expansion-panel>
 </mat-accordion>
