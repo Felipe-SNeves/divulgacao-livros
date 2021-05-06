@@ -1,15 +1,16 @@
 <mat-card>
-	<mat-card-header>
-		<mat-card-title>Inserir livro</mat-card-title>
-		<mat-card-subtitle>Preencha os campos abaixo para cadastrar um livro</mat-card-subtitle>
+	<mat-spinner *ngIf="loading"></mat-spinner>
+	<mat-card-header *ngIf="!loading">
+		<mat-card-title>Salvar livro</mat-card-title>
+		<mat-card-subtitle>Preencha os campos abaixo para salvar um livro</mat-card-subtitle>
 	</mat-card-header>
-	<form #livroForm="ngForm" (submit)="onAdicionarLivro (livroForm)">
+	<form #livroForm="ngForm" (submit)="onSalvarLivro (livroForm)" *ngIf="!loading">
 		<mat-form-field>
 			<input
 				type="text"
 				matInput
 				placeholder="Título"
-				ngModel
+				[ngModel]="livro?.titulo"
 				name="titulo"
 				required
 			/>
@@ -20,7 +21,7 @@
 				type="text"
 				matInput
 				placeholder="Autor"
-				ngModel
+				[ngModel]="livro?.autor"
 				name="autor"
 				required
 			/>
@@ -31,12 +32,12 @@
 				type="text"
 				matInput
 				placeholder="Número de páginas"
-				ngModel
+				[ngModel]="livro?.qntd_paginas"
 				name="qntd_paginas"
 				required
 			/>
 			<mat-error>Insira a quantidade de páginas</mat-error>
 		</mat-form-field>
-		<button color="primary" mat-raised-button>Adicionar Livro</button>
+		<button color="accent" mat-raised-button>Salvar Livro</button>
 	</form>
 </mat-card>

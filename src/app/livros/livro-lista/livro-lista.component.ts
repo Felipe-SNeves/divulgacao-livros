@@ -13,12 +13,16 @@ export class LivroListaComponent implements OnInit, OnDestroy {
 
 	livros: Livro[] = [];
 	private livrosSubscription: Subscription;
+	public loading: boolean = false;
 
   	constructor(private livroService: LivroService) { }
 
   	ngOnInit (): void {
+		this.loading = true;
 		this.livroService.getLivros ();
-		this.livrosSubscription = this.livroService.getListaLivrosAtualizadaObservable().subscribe ( (livros: Livro []) => { this.livros = livros; } );
+		this.livrosSubscription = this.livroService.getListaLivrosAtualizadaObservable().subscribe ( (livros: Livro []) => { 
+			this.loading = false;
+			this.livros = livros; } );
   	}
 
 	ngOnDestroy (): void {
