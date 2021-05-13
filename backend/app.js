@@ -1,3 +1,4 @@
+const path = require ('path');
 const express = require ('express');
 const app = express ();
 const bodyParser = require ('body-parser');
@@ -8,7 +9,7 @@ mongoose.connect ('mongodb://localhost:27017/app-livros', {useNewUrlParser: true
 .then( () => console.log ('MongoDB: OK')).catch( () => console.log('MongoDB: Failure'));
 
 app.use (bodyParser.json());
-
+app.use ('/imagens', express.static (path.join('backend/imagens')));
 app.use (
 
 	(req, res, next) => {

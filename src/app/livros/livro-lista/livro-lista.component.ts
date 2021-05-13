@@ -30,7 +30,7 @@ export class LivroListaComponent implements OnInit, OnDestroy {
 	}
 
 	onDelete (id: string): void {
-		console.log ('Excluindo o livro de id: ' + id);
+		//console.log ('Excluindo o livro de id: ' + id);
 		this.livroService.removerLivro(id);
 	}
 }

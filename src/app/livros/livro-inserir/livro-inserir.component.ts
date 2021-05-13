@@ -3,6 +3,7 @@ import { Livro } from '../livro.model';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { LivroService } from '../livro.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { mimeTypeValidator } from './mime-type.validator';
 
 @Component({
   	selector: 'app-livro-inserir',
@@ -17,6 +18,7 @@ export class LivroInserirComponent implements OnInit {
 	public livro: Livro;
 	public loading: boolean = false;
 	form: FormGroup;
+	previewImagem: string;
 
 	onSalvarLivro () {
 		if (this.form.invalid) return;
@@ -28,7 +30,8 @@ export class LivroInserirComponent implements OnInit {
 			this.livroService.adicionarLivro (
 				this.form.value.titulo,
 				this.form.value.autor,
-				this.form.value.qntd_paginas
+				this.form.value.qntd_paginas,
+				this.form.value.imagem
 			);
 		}
 		else {
@@ -49,7 +52,8 @@ export class LivroInserirComponent implements OnInit {
 		this.form = new FormGroup ({
 			titulo: new FormControl (null, {validators: [Validators.required, Validators.minLength (5)]}),
 			autor: new FormControl (null, {validators: [Validators.required]}),
-			qntd_paginas: new FormControl (null, {validators: [Validators.required]})
+			qntd_paginas: new FormControl (null, {validators: [Validators.required]}),
+			imagem: new FormControl (null, {validators: [Validators.required], asyncValidators: [mimeTypeValidator]})
 		});
 		this.route.paramMap.subscribe ((paramMap: ParamMap) => { 
 			if (paramMap.has ('idLivro')) {
@@ -62,7 +66,8 @@ export class LivroInserirComponent implements OnInit {
 						id: dadosLiv._id,
 						titulo: dadosLiv.titulo,
 						autor: dadosLiv.autor,
-						qntd_paginas: dadosLiv.qntd_paginas
+						qntd_paginas: dadosLiv.qntd_paginas,
+						imagemURL: null
 					};
 					this.form.setValue ({
 						titulo: this.livro.titulo,
@@ -76,5 +81,17 @@ export class LivroInserirComponent implements OnInit {
 				this.idLivro = null;
 			}
 	});	
+	}
+
+	onImagemSelecionada (event: Event) {
+		const arquivo = (event.target as HTMLInputElement).files[0];
+
+		this.form.patchValue ({'imagem': arquivo});
+		this.form.get ('imagem').updateValueAndValidity ();
+		const reader = new FileReader ();
+		reader.onload = () => {
+			this.previewImagem = reader.result as string;
+		}
+		reader.readAsDataURL (arquivo);
 	}
 }

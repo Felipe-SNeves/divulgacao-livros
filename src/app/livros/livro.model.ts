@@ -3,4 +3,5 @@ export interface Livro {
 	titulo: string;
 	autor: string;
 	qntd_paginas: string;
+	imagemURL: string;
 }
