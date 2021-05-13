@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -29,7 +29,7 @@ import { LivroListaComponent } from './livros/livro-lista/livro-lista.component'
     MatToolbarModule,
     MatCardModule,
     MatInputModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatExpansionModule,
     HttpClientModule,
