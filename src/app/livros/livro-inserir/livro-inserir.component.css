@@ -10,3 +10,7 @@ mat-card mat-form-field, input {
 mat-spinner {
 	margin: auto;
 }
+
+input[type="file"] {
+	visibility: hidden;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Livro } from '../livro.model';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { LivroService } from '../livro.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
@@ -16,35 +16,41 @@ export class LivroInserirComponent implements OnInit {
 	private idLivro: string;
 	public livro: Livro;
 	public loading: boolean = false;
+	form: FormGroup;
 
-	onSalvarLivro (livroForm: NgForm) {
-		if (livroForm.invalid) return;
+	onSalvarLivro () {
+		if (this.form.invalid) return;
 
 		this.loading = true;
 
 		if (this.modo === "criar") {
 
 			this.livroService.adicionarLivro (
-				livroForm.value.titulo,
-				livroForm.value.autor,
-				livroForm.value.qntd_paginas
+				this.form.value.titulo,
+				this.form.value.autor,
+				this.form.value.qntd_paginas
 			);
 		}
 		else {
 			this.livroService.atualizarLivro (
 				this.idLivro,
-				livroForm.value.titulo,
-				livroForm.value.autor,
-				livroForm.value.qntd_paginas
+				this.form.value.titulo,
+				this.form.value.autor,
+				this.form.value.qntd_paginas
 			);
 		}
-		livroForm.resetForm ();
+		this.form.reset ();
 	}
 
 	constructor (private livroService: LivroService, public route: ActivatedRoute) {
 	}
 
 	ngOnInit (): void {
+		this.form = new FormGroup ({
+			titulo: new FormControl (null, {validators: [Validators.required, Validators.minLength (5)]}),
+			autor: new FormControl (null, {validators: [Validators.required]}),
+			qntd_paginas: new FormControl (null, {validators: [Validators.required]})
+		});
 		this.route.paramMap.subscribe ((paramMap: ParamMap) => { 
 			if (paramMap.has ('idLivro')) {
 				this.modo = "editar";
@@ -58,6 +64,11 @@ export class LivroInserirComponent implements OnInit {
 						autor: dadosLiv.autor,
 						qntd_paginas: dadosLiv.qntd_paginas
 					};
+					this.form.setValue ({
+						titulo: this.livro.titulo,
+						autor: this.livro.autor,
+						qntd_paginas: this.livro.qntd_paginas
+					});
 				});
 			}
 			else {

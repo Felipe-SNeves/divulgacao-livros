@@ -4,26 +4,28 @@
 		<mat-card-title>Salvar livro</mat-card-title>
 		<mat-card-subtitle>Preencha os campos abaixo para salvar um livro</mat-card-subtitle>
 	</mat-card-header>
-	<form #livroForm="ngForm" (submit)="onSalvarLivro (livroForm)" *ngIf="!loading">
+	<form [formGroup]="form" #livroForm="ngForm" (submit)="onSalvarLivro ()" *ngIf="!loading">
 		<mat-form-field>
 			<input
 				type="text"
 				matInput
 				placeholder="Título"
-				[ngModel]="livro?.titulo"
 				name="titulo"
-				required
+				formControlName="titulo"
 			/>
 			<mat-error>Insira o título do livro</mat-error>
 		</mat-form-field>
+		<div>
+			<button mat-stroked-button type="button" (click)="selecionaArquivo.click ()">Selecionar imagem</button>
+			<input type="file" #selecionaArquivo />
+		</div>
 		<mat-form-field>
 			<input
 				type="text"
 				matInput
 				placeholder="Autor"
-				[ngModel]="livro?.autor"
 				name="autor"
-				required
+				formControlName="autor"
 			/>
 			<mat-error>Insira o autor do livro</mat-error>
 		</mat-form-field>
@@ -32,9 +34,8 @@
 				type="text"
 				matInput
 				placeholder="Número de páginas"
-				[ngModel]="livro?.qntd_paginas"
 				name="qntd_paginas"
-				required
+				formControlName="qntd_paginas"
 			/>
 			<mat-error>Insira a quantidade de páginas</mat-error>
 		</mat-form-field>
