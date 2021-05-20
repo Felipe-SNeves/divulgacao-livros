@@ -52,15 +52,24 @@ router.post ('', multer({storage: armazenamento}).single('imagem'),
 router.get ('',
 
         (req, res, next) => {
-
-                Livro.find().then ( documents => {
-                console.log (documents);
-                res.status(200).json({
-                        mensagem: "Submetendo lista de livros!",
-                        livros: documents
-                });
-        })
-});
+		const pageSize = +req.query.pageSize;
+		const page = +req.query.page;
+		const consulta = Livro.find ();
+		let livrosEncontrados;
+		if (pageSize && page) {
+			consulta.skip(pageSize * (page-1)).limit(pageSize);
+		}
+                consulta.then ( documents => {
+			livrosEncontrados = documents;
+			return Livro.count ();
+		}).then((count) => {
+                	res.status(200).json({
+                        	mensagem: "Submetendo lista de livros!",
+                        	livros: livrosEncontrados,
+				maxLivros: count
+                	});
+		});
+        });
 
 router.delete ('/:id', 
         (req, res, next) => {
@@ -72,13 +81,20 @@ router.delete ('/:id',
 )
 
 router.put ('/:id', 
-
+	multer ({storage: armazenamento}).single ('imagem'),
         (req, res, next) => {
+		console.log (req.file);
+		let imagemURL = req.body.imagemURL;
+		if (req.file) {
+			const url = req.protocol + '://' + req.get('host');
+			imagemURL = url + '/imagens/' + req.file.filename;
+		}
                 const livro = new Livro ({
                         _id: req.params.id,
                         titulo: req.body.titulo,
                         autor: req.body.autor,
-                        qntd_paginas: req.body.qntd_paginas
+                        qntd_paginas: req.body.qntd_paginas,
+			imagemURL: imagemURL
                 });
 
                 Livro.updateOne ({_id: req.params.id}, livro).then ((resultado) => {

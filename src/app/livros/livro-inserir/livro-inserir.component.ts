@@ -39,7 +39,8 @@ export class LivroInserirComponent implements OnInit {
 				this.idLivro,
 				this.form.value.titulo,
 				this.form.value.autor,
-				this.form.value.qntd_paginas
+				this.form.value.qntd_paginas,
+				this.form.value.imagem
 			);
 		}
 		this.form.reset ();
@@ -67,12 +68,13 @@ export class LivroInserirComponent implements OnInit {
 						titulo: dadosLiv.titulo,
 						autor: dadosLiv.autor,
 						qntd_paginas: dadosLiv.qntd_paginas,
-						imagemURL: null
+						imagemURL: dadosLiv.imagemURL
 					};
 					this.form.setValue ({
 						titulo: this.livro.titulo,
 						autor: this.livro.autor,
-						qntd_paginas: this.livro.qntd_paginas
+						qntd_paginas: this.livro.qntd_paginas,
+						imagem: this.livro.imagemURL
 					});
 				});
 			}

@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CabecalhoComponent } from './livros/cabecalho/cabecalho.component';
 import { LivroInserirComponent } from './livros/livro-inserir/livro-inserir.component';
 import { LivroListaComponent } from './livros/livro-lista/livro-lista.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { LivroListaComponent } from './livros/livro-lista/livro-lista.component'
     MatExpansionModule,
     HttpClientModule,
     AppRoutingModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
